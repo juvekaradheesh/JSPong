@@ -1,6 +1,6 @@
 /**
  * NAME : JSPONG
- * VERSION : 1.0
+ * VERSION : 1.0.1
  * DATE CREATED : 5th June 2017
  * LAST UPDATED : 5th June 2017
  * AUTHOR(S) : Adheesh S. Juvekar (1.0)
@@ -8,7 +8,7 @@
 
 //GAMESPEED or LEVEL
 //Refresh per xth of second
-const GS = 30;
+const GS = 60;
 
 // Paddle 1 and Paddle 2 position in y axis
 var p1y = 0;
@@ -22,12 +22,12 @@ var ph = 120;
 var bd = 10;
 
 // Ball Position in x and y
-var bx = bd/2;
+var bx = bd/2 + pw;
 var by = bd/2;
 
 // x and y Speed of Ball
-const XS = 8
-const YS = 5
+const XS = 2;
+const YS = 2;
 
 // x and y Velocity of Ball
 var xv = XS;
@@ -38,7 +38,7 @@ var score1 = 0;
 var score2 = 0;
 
 // Speed of Paddle 2 
-var p2speed = 3;
+var p2speed = 2;
 
 
 window.onload = function(){
@@ -68,7 +68,6 @@ function resetB(winFlag){
 }
 
 function update(){
-
     bx += xv;
     by += yv;
     
@@ -78,14 +77,32 @@ function update(){
     if(bx > canvas.width - bd/2 - pw){
         if(by > p2y && by < p2y + ph){
             // Successfull hit
+
+            //If hit upper half of paddle
+            if(by < (p2y+p2y+ph)/2){
+                if(yv < 0){
+                    yv -= YS/2;
+                }
+                else{
+                    yv -= (YS + YS/2);
+                }
+            }
+
+            //If hit lower half of paddle
+            else{
+                if(yv < 0){
+                    yv += (YS + YS/2);
+                }
+                else{
+                    yv += YS/2;
+                }
+            }
+
             xv = -xv;
         }
         else{
             // Player 2 miss, Player 1 Scores
             score1++;
-            console.log("Player 1 scored!");
-            console.log("Player 1 " + score1);
-            console.log("Player 2 " + score2);
             var x = true;
             resetB(x);
         }
@@ -93,14 +110,33 @@ function update(){
     if(bx < pw + bd/2){
         if(by > p1y && by < p1y + ph){
             // Successfull hit
+
+            //If hit above half of paddle
+            if(by < (p1y+p1y+ph)/2){
+                if(yv < 0){
+                    yv -= YS/2;
+                }
+                else{
+                    yv -= (YS + YS/2);
+                }
+            }
+
+            //If hit lower half of paddle
+            else{
+                if(yv < 0){
+                    yv += (YS + YS/2);
+                }
+                else{
+                    yv += YS/2;
+                }
+            }
+
+
             xv = -xv;
         }
         else{
             // Player 1 miss, Player 2 Scores
             score2++;
-            console.log("Player 2 scored!");
-            console.log("Player 1 " + score1);
-            console.log("Player 2 " + score2);
             var x = false;
             resetB(x);
         }
